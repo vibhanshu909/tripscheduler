@@ -320,22 +320,19 @@ const NewTrip = () => {
         </Form>
       </Main>
       <Sidebar sidebarHeading="Trips">
-        {state.trips.length > 0 ? (
-          state.trips.map(trip => (
-            <SidebarCard
+      {state?.trips.length === 0
+            ? (state?.tripsInStore === true
+            ? <NoTrips>No trips registered yet</NoTrips>
+            : <StyledLoader type="BallTriangle" color="var(--accent)" />)
+            : state?.trips.map(trip => <SidebarCard
               key={trip.id}
               country={trip.address.country}
               company={trip.company_name}
               address={`${trip.address.street} ${trip.address.street_num} ${trip.address.zip} ${trip.address.city}`}
-              date={`${moment(trip.start_date).format('D MMM')} - ${moment(
-                trip.end_date,
-              ).format('D MMM, YYYY')}`}
+              date={`${moment(trip.start_date).format('D MMM')}
+                - ${moment(trip.end_date,).format('D MMM, YYYY')}`}
               id={trip.id}
-            />
-          ))
-        ) : (
-          <StyledLoader type="BallTriangle" color="var(--accent)" />
-        )}
+            />)}
       </Sidebar>
     </Container>
   )
@@ -344,6 +341,13 @@ const NewTrip = () => {
 export default NewTrip
 
 const DPDown = styled(motion.div)``
+
+const NoTrips = styled(motion.div)`
+  text-align: center;
+  margin: 4rem;
+  font-size: 3rem;
+  color: var(--dark-grey)
+`
 
 const StyledLoader = styled(Loader)`
   display: flex;
@@ -553,5 +557,3 @@ const RadioButton = styled.label`
     transform: scale(1);
   }
 `
-
-

@@ -71,10 +71,8 @@ const NewTrip = () => {
       ? moment(state.form.start_date, 'YYYY-MM-DD').toDate()
       : ''
 
-
   return (
     <Container>
-      {/*  */}
       <Main>
         <Heading title="Edit trip" />
         <Modal
@@ -139,8 +137,8 @@ const NewTrip = () => {
                     <DatePicker
                       required
                       selected={startDate}
-                      onChange={(date) => {
-                        let nextDay = moment(date).add(1, 'day').toDate();
+                      onChange={date => {
+                        let nextDay = moment(date).add(1, 'day').toDate()
                         setEndDateMin(nextDay)
                         if (moment(state.form.end_date) <= moment(date)) {
                           setEndDateVal('');
@@ -279,6 +277,7 @@ const NewTrip = () => {
                     required
                     id="streetNumber"
                     name="streetNumber"
+                    type="number" //remove this line when back-end allows strings for this field
                     placeholder={
                       state.form.address.street_num || 'Type here ...'
                     }
@@ -383,22 +382,19 @@ const NewTrip = () => {
         </Form>
       </Main>
       <Sidebar sidebarHeading="Trips">
-        {state.trips.length > 0 ? (
-          state.trips.map(trip => (
-            <SidebarCard
-              key={trip.id}
-              country={trip.address.country}
-              company={trip.company_name}
-              address={`${trip.address.street} ${trip.address.street_num} ${trip.address.zip} ${trip.address.city}`}
-              date={`${moment(trip.start_date).format('D MMM')} - ${moment(
-                trip.end_date,
-              ).format('D MMM, YYYY')}`}
-              id={trip.id}
-            />
-          ))
-        ) : (
-          <StyledLoader type="BallTriangle" color="var(--accent)" />
-        )}
+        {state?.trips.length === 0
+              ? (state?.tripsInStore === true
+              ? <NoTrips>No trips registered yet</NoTrips>
+              : <StyledLoader type="BallTriangle" color="var(--accent)" />)
+              : state?.trips.map(trip => <SidebarCard key={trip.id}
+                country={trip.address.country}
+                company={trip.company_name}
+                address={`${trip.address.street} ${trip.address.street_num} ${trip.address.zip} ${trip.address.city}`}
+                date={`${moment(trip.start_date).format('D MMM')}
+                - ${moment(trip.end_date).format('D MMM, YYYY')}`}
+                id={trip.id}
+                />)
+        }
       </Sidebar>
     </Container>
   )
@@ -407,10 +403,16 @@ const NewTrip = () => {
 export default NewTrip
 
 const DPDown = styled(motion.div)``
+
 const FormButtonGroup = styled.div`
   flex-direction: row;
 `
-
+const NoTrips = styled(motion.div)`
+  text-align: center;
+  margin: 4rem;
+  font-size: 3rem;
+  color: var(--dark-grey)
+`
 const AcceptDeleteButton = styled(motion.div)`
   background: red;
   font-size: 1.6rem;

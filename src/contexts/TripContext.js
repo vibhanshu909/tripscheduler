@@ -21,6 +21,7 @@ const initialState = {
   },
   countries: [],
   selectedCountry: '',
+  tripsInStore: false
 }
 
 const reducer = (state, action) => {
@@ -44,24 +45,29 @@ const reducer = (state, action) => {
         },
         countries: [...state.countries],
         selectedCountry: '',
+        tripsInStore: false
       }
       case 'EDIT_TRIP': 
-        let newState =  {
-          trips: [...state.trips],
-          form: {...state.form },
-          countries: [...state.countries],
-          selectedCountry: `flag-${state.selectedCountry}`,
-        }
-        let newTrip = {...state.form,id:action.payload.id}
-        newState.trips = newState.trips.filter(item=> item.id !== action.payload.id)
-        newState.trips.push(newTrip)
-        return {...newState}
+      
+      let newState =  {
+        trips: [...state.trips],
+        form: {...state.form },
+        countries: [...state.countries],
+        selectedCountry: `flag-${state.selectedCountry}`,
+        tripsInStore: true
+      }
+      let newTrip = {...state.form,id:action.payload.id}
+      newState.trips = newState.trips.filter(item=> item.id !== action.payload.id)
+      newState.trips.push(newTrip)
+      return {...newState}
+
     case 'SET_TRIPS':
       return {
         trips: action.payload,
         form: { ...state.form },
         countries: [...state.countries],
         selectedCountry: `flag-${state.selectedCountry}`,
+        tripsInStore: true
       }
     case 'ADD_TRIP':
       return {
@@ -77,6 +83,7 @@ const reducer = (state, action) => {
         form: { ...state.form },
         countries: [...state.countries],
         selectedCountry: `flag-${state.selectedCountry}`,
+        tripsInStore: true
       }
     case 'SET_COUNTRIES':
       return {

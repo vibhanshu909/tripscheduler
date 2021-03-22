@@ -21,10 +21,10 @@ const Trips = () => {
         <Heading title="Your trips" />
         <AllTrips>
           {state?.trips.length === 0
-            ? 'No trips registered yet' : (
-            state?.trips.map(trip => {
-              return (
-                <TripRow
+            ? (state?.tripsInStore === true
+            ? <NoTrips>No trips registered yet</NoTrips>
+            : <StyledLoader type="BallTriangle" color="var(--accent)" />)
+            : state?.trips.map(trip => <TripRow
                   as={motion.div}
                   initial={{ y: -250 }}
                   key={trip.id}
@@ -32,15 +32,10 @@ const Trips = () => {
                   company={trip.company_name}
                   id={trip.id}
                   address={`${trip.address.street} ${trip.address.street_num} ${trip.address.zip} ${trip.address.city}`}
-                  date={`${moment(trip.start_date).format('D MMM')} - ${moment(
-                    trip.end_date,
-                  ).format('D MMM, YYYY')}`}
-                />
-              )
+                  date={`${moment(trip.start_date).format('D MMM')}
+                         - ${moment(trip.end_date,).format('D MMM, YYYY')}`}
+                />)
             })
-          )
-          } 
-            {/* <StyledLoader type="BallTriangle" color="var(--accent)" /> */}
         </AllTrips>
       </Main>
 
@@ -58,7 +53,12 @@ const StyledLoader = styled(Loader)`
   justify-content: center;
   margin: 150px;
 `
-
+const NoTrips = styled(motion.div)`
+  text-align: center;
+  margin: 4rem;
+  font-size: 3rem;
+  color: var(--dark-grey)
+`
 const Container = styled.div`
   display: flex;
   justify-content: center;
