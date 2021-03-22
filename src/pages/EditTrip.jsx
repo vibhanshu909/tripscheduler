@@ -383,7 +383,7 @@ const NewTrip = () => {
       </Main>
       <Sidebar sidebarHeading="Trips">
         {state?.trips.length === 0
-              ? (state?.tripsInStore === true
+              ? (state?.tripsFetched === true
               ? <NoTrips>No trips registered yet</NoTrips>
               : <StyledLoader type="BallTriangle" color="var(--accent)" />)
               : state?.trips.map(trip => <SidebarCard key={trip.id}
