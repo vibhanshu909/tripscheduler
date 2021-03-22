@@ -1,66 +1,102 @@
-import { useContext, useEffect } from 'react'
-import DatePicker from 'react-datepicker'
-import Loader from 'react-loader-spinner'
-import styled from 'styled-components'
-import Dropdown from 'react-dropdown'
-import moment from 'moment'
-import { useParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
-
-import { api } from 'services/httpService'
-import { device } from 'style/responsive'
-
+import Check from 'assets/Check.svg'
+import Anchor from 'components/Anchor'
 import Heading from 'components/Heading'
 import Sidebar from 'components/Sidebar'
 import SidebarCard from 'components/SidebarCard'
+import SVGIcon from 'components/SVGIcon'
 import { TripContext } from 'contexts/TripContext'
+import { motion } from 'framer-motion'
+import moment from 'moment'
+import React, { useContext, useEffect, useState } from 'react'
+import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import Loader from 'react-loader-spinner'
+import Modal from 'react-modal'
+import { api } from 'services/httpService'
+import styled from 'styled-components'
+import { device } from 'utils/style/responsive'
+
+const customStyles = {
+  content: {
+    top: '45%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '500px',
+  },
+} as const
 
 const NewTrip = () => {
   const [state, dispatch] = useContext(TripContext)
-  const { id } = useParams()
-
   const xValues = [5000, -40, 0]
+  const [modalIsOpen, setIsOpen] = useState(false)
+  const [endDateMin, setEndDateMin] = useState(moment().toDate())
+  const [endDateVal, setEndDateVal] = useState<string | Date>('')
+
+  const addNewTrip = async () => {
+    let resp
+    try {
+      resp = await api.post('/trip', state.form)
+      dispatch({ type: 'ADD_TRIP', payload: { ...state.form, id: resp.data.id } })
+      setIsOpen(true)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   useEffect(() => {
-    const fetchTrip = async () => {
-      const { data } = await api.get(`/trip/${id}`)
-      dispatch({ type: 'SET_FORM', payload: data })
-    }
-    fetchTrip()
-  }, [id, dispatch])
+    dispatch({ type: 'SET_INITIAL' })
+  }, [dispatch])
 
   let startDate =
-    state.form.start_date !== ''
-      ? moment(state.form.start_date, 'YYYY-MM-DD').utc(false).toDate()
-      : ''
-
-  let endDate =
-    state.form.end_date !== ''
-      ? moment(state.form.end_date, 'YYYY-MM-DD').utc(false).toDate()
-      : ''
+    state.form.start_date !== '' ? moment(state.form.start_date, 'YYYY-MM-DD').toDate() : ''
 
   return (
     <Container>
       <Main>
-        <Heading title="View trip" />
+        <Heading title='New trip' />
+        <Modal isOpen={modalIsOpen} style={customStyles} onRequestClose={() => setIsOpen(false)}>
+          <Form
+            initial={{ opacity: 0, scale: 0.75 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Label htmlFor='q' style={{ textAlign: 'center' }}>
+              Data Uploaded Successfully
+            </Label>
+            <FormButtonGroup>
+              <Anchor href='/'>
+                <AcceptDeleteButton
+                  whileHover={{
+                    scale: 1.15,
+                    translateY: -10,
+                    boxShadow: '3px 3px 5px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  OK
+                </AcceptDeleteButton>
+              </Anchor>
+            </FormButtonGroup>
+          </Form>
+        </Modal>
         <Form>
           <FormContent>
             <InnerForm>
               <FormGroup>
                 <DPDown animate={{ x: xValues }} transition={{ duration: 1 }}>
-                  <Label htmlFor="countries">Where do you want to go</Label>
+                  <Label htmlFor='countries'>Where do you want to go</Label>
                   <Dropdown
-                  disabled
-                    required
-                    className={`flag-${state.form.address.country}`}
-                    id="country"
-                    name="country"
+                    // required
+                    className={state.selectedCountry}
+                    // id='country'
+                    // name='country'
                     options={state.countries}
-                    placeholder={state.form.address.country || 'Select country'}
-                    value={state.form.address.country}
-                    onChange={data => {
+                    placeholder='Select country'
+                    onChange={(data) => {
                       dispatch({
                         type: 'SET_SELECTED_COUNTRY',
                         payload: data.value,
@@ -75,56 +111,65 @@ const NewTrip = () => {
                   animate={{ x: xValues, opacity: [0, 0.3, 1] }}
                   transition={{ duration: 1, delay: 0.1 }}
                 >
-                  <Label htmlFor="startDate">Start date</Label>
+                  <Label htmlFor='startDate'>Start date</Label>
                   <DatePickerWrap>
                     <DatePicker
-                    disabled
                       required
-                      selected={startDate}
-                      onChange={date => {
+                      selected={typeof startDate === 'string' ? undefined : startDate}
+                      onChange={(date) => {
+                        let nextDay = moment(date as any)
+                          .add(1, 'day')
+                          .toDate()
+                        setEndDateMin(nextDay)
+                        if (moment(state.form.end_date) <= moment(date as any)) {
+                          setEndDateVal('')
+                          dispatch({
+                            type: 'SET_EndDate',
+                            payload: {
+                              end_date: '',
+                            },
+                          })
+                        }
                         dispatch({
                           type: 'SET_StartDate',
                           payload: {
-                            start_date: date,
+                            start_date: moment(date as any).format('YYYY-MM-DD'),
                           },
                         })
                       }}
-                      date
-                      id="startDate"
-                      name="startDate"
-                      placeholderText="dd. mm. year"
+                      // date
+                      id='startDate'
+                      name='startDate'
+                      placeholderText='dd. mm. year'
                       showPopperArrow={false}
                       selectsStart
                       showMonthYearDropdown
-                      dateFormat="dd. MM. yyyy"
+                      dateFormat='dd. MM. yyyy'
                       minDate={moment().toDate()}
                     />
                   </DatePickerWrap>
                 </FormInnerGroup>
 
-                <FormInnerGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.2 }}
-                >
-                  <Label htmlFor="endDate">End date</Label>
+                <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.2 }}>
+                  <Label htmlFor='endDate'>End date</Label>
                   <DatePickerWrap>
                     <DatePicker
-                    disabled
                       required
-                      selected={endDate}
-                      onChange={date => {
+                      selected={typeof endDateVal === 'string' ? undefined : endDateVal}
+                      onChange={(date) => {
+                        setEndDateVal(moment(date as any).toDate())
                         dispatch({
                           type: 'SET_EndDate',
                           payload: {
-                            end_date: date,
+                            end_date: moment(date as any).format('YYYY-MM-DD'),
                           },
                         })
                       }}
-                      id="endDate"
-                      name="endDate"
-                      placeholderText="dd. mm. year"
-                      dateFormat="dd. MM. yyyy"
-                      minDate={moment().toDate()}
+                      id='endDate'
+                      name='endDate'
+                      placeholderText='dd. mm. year'
+                      dateFormat='dd. MM. yyyy'
+                      minDate={endDateMin}
                       showTwoColumnMonthYearPicker
                       showPopperArrow={false}
                     />
@@ -133,18 +178,14 @@ const NewTrip = () => {
               </FormGroup>
 
               <FormGroup>
-                <FormInnerGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.3 }}
-                >
-                  <Label htmlFor="company">Company name</Label>
+                <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.3 }}>
+                  <Label htmlFor='company'>Company name</Label>
                   <Input
-                  disabled
                     required
-                    id="company"
-                    name="company"
-                    placeholder={state.form.company_name || 'Type here ...'}
-                    onChange={e => {
+                    id='company'
+                    name='company'
+                    placeholder='Type here...'
+                    onChange={(e) => {
                       dispatch({
                         type: 'SET_CompanyName',
                         payload: {
@@ -152,22 +193,17 @@ const NewTrip = () => {
                         },
                       })
                     }}
-                   value={state.form.company_name}
                   />
                 </FormInnerGroup>
 
-                <FormInnerGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.4 }}
-                >
-                  <Label htmlFor="city">City</Label>
+                <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.4 }}>
+                  <Label htmlFor='city'>City</Label>
                   <Input
-                  disabled
                     required
-                    id="city"
-                    name="city"
-                    placeholder={state.form.address.city || 'Type here ...'}
-                    onChange={e => {
+                    id='city'
+                    name='city'
+                    placeholder='Type here...'
+                    onChange={(e) => {
                       dispatch({
                         type: 'SET_CITY',
                         payload: {
@@ -177,22 +213,17 @@ const NewTrip = () => {
                         },
                       })
                     }}
-                   value={state.form.address.city}
                   />
                 </FormInnerGroup>
 
-                <FormInnerGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                >
-                  <Label htmlFor="street">Street</Label>
+                <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.5 }}>
+                  <Label htmlFor='street'>Street</Label>
                   <Input
                     required
-                    disabled
-                    id="street"
-                    name="street"
-                    placeholder={state.form.address.street || 'Type here ...'}
-                    onChange={e => {
+                    id='street'
+                    name='street'
+                    placeholder='Type here...'
+                    onChange={(e) => {
                       dispatch({
                         type: 'SET_Street',
                         payload: {
@@ -202,24 +233,17 @@ const NewTrip = () => {
                         },
                       })
                     }}
-                  value={state.form.address.street}
                   />
                 </FormInnerGroup>
 
-                <FormInnerGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.6 }}
-                >
-                  <Label htmlFor="streetNumber">Street Number</Label>
+                <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.6 }}>
+                  <Label htmlFor='streetNumber'>Street Number</Label>
                   <Input
-                  disabled
                     required
-                    id="streetNumber"
-                    name="streetNumber"
-                    placeholder={
-                      state.form.address.street_num || 'Type here ...'
-                    }
-                    onChange={e => {
+                    id='streetNumber'
+                    name='streetNumber'
+                    placeholder='Type here...'
+                    onChange={(e) => {
                       dispatch({
                         type: 'SET_StreetNumber',
                         payload: {
@@ -229,23 +253,16 @@ const NewTrip = () => {
                         },
                       })
                     }}
-                   value={state.form.address.street_num}
                   />
                 </FormInnerGroup>
 
-                <FormInnerGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.7 }}
-                >
-                  <Label htmlFor="zipCode">Zip code</Label>
+                <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.7 }}>
+                  <Label htmlFor='zipCode'>Zip code</Label>
                   <Input
-                    required={true}
-                    disabled
-                    id="zipCode"
-                    name="zipCode"
-                    placeholder={state.form.address.zip || 'Type here ...'}
-                    
-                    onChange={e => {
+                    id='zipCode'
+                    name='zipCode'
+                    placeholder='Type here...'
+                    onChange={(e) => {
                       dispatch({
                         type: 'SET_ZIP',
                         payload: {
@@ -255,7 +272,6 @@ const NewTrip = () => {
                         },
                       })
                     }}
-                  value={state.form.address.zip}
                   />
                 </FormInnerGroup>
               </FormGroup>
@@ -265,19 +281,14 @@ const NewTrip = () => {
                   Have you been recently tested for <strong>COVID-19</strong>
                 </LabelQuestion>
 
-                <RadioButtonGroup
-                  animate={{ x: xValues }}
-                  transition={{ duration: 1, delay: 0.8 }}
-                >
+                <RadioButtonGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.8 }}>
                   <RadioButton>
                     <input
-                    disabled
                       required
-                      type="radio"
-                      name="testedCovid"
-                      id="yes"
-                      value="0"
-                      checked={state.form.covid === true}
+                      type='radio'
+                      name='testedCovid'
+                      id='yes'
+                      value='0'
                       onChange={() => {
                         dispatch({
                           type: 'SET_Covid',
@@ -294,12 +305,10 @@ const NewTrip = () => {
                   <RadioButton>
                     <input
                       required
-                      disabled
-                      type="radio"
-                      name="testedCovid"
-                      id="no"
-                      value="1"
-                      checked={state.form.covid === false}
+                      type='radio'
+                      name='testedCovid'
+                      id='no'
+                      value='1'
                       onChange={() => {
                         dispatch({
                           type: 'SET_Covid',
@@ -317,22 +326,31 @@ const NewTrip = () => {
             </InnerForm>
           </FormContent>
 
+          <FormFooter>
+            <Button type='button' onClick={() => addNewTrip()}>
+              Save
+              <SVGIcon icon={Check} width={16} height={12} />
+            </Button>
+          </FormFooter>
         </Form>
       </Main>
-      <Sidebar sidebarHeading="Trips">
-      {state?.trips.length === 0
-            ? (state?.tripsFetched === true
-            ? <NoTrips>No trips registered yet</NoTrips>
-            : <StyledLoader type="BallTriangle" color="var(--accent)" />)
-            : state?.trips.map(trip => <SidebarCard
+      <Sidebar sidebarHeading='Trips'>
+        {state.trips.length > 0 ? (
+          state.trips.map((trip) => (
+            <SidebarCard
               key={trip.id}
               country={trip.address.country}
               company={trip.company_name}
               address={`${trip.address.street} ${trip.address.street_num} ${trip.address.zip} ${trip.address.city}`}
-              date={`${moment(trip.start_date).format('D MMM')}
-                - ${moment(trip.end_date,).format('D MMM, YYYY')}`}
+              date={`${moment(trip.start_date).format('D MMM')} - ${moment(trip.end_date).format(
+                'D MMM, YYYY',
+              )}`}
               id={trip.id}
-            />)}
+            />
+          ))
+        ) : (
+          <StyledLoader type='BallTriangle' color='var(--accent)' />
+        )}
       </Sidebar>
     </Container>
   )
@@ -342,13 +360,27 @@ export default NewTrip
 
 const DPDown = styled(motion.div)``
 
-const NoTrips = styled(motion.div)`
-  text-align: center;
-  margin: 4rem;
-  font-size: 3rem;
-  color: var(--dark-grey)
+const FormButtonGroup = styled.div`
+  flex-direction: row;
 `
+const AcceptDeleteButton = styled(motion.div)`
+  background: red;
+  font-size: 1.6rem;
+  padding: 1.3rem 2rem;
+  margin: 1.2rem;
+  max-width: 200px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: left;
+  display: inline-block;
+  align-items: center;
+  cursor: pointer;
+  color: white;
 
+  > svg {
+    margin-left: auto;
+  }
+`
 const StyledLoader = styled(Loader)`
   display: flex;
   justify-content: center;
@@ -370,7 +402,7 @@ const Main = styled.main`
   align-items: center;
 `
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -390,17 +422,14 @@ const FormContent = styled.div`
     width: 10px;
   }
 
-  /* Track */
   &::-webkit-scrollbar-track {
     background: white;
   }
 
-  /* Handle */
   &::-webkit-scrollbar-thumb {
     background: #ccc;
   }
 
-  /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
@@ -555,5 +584,31 @@ const RadioButton = styled.label`
 
   > input:checked ~ div:before {
     transform: scale(1);
+  }
+`
+
+const FormFooter = styled.div`
+  width: 100%;
+  border-top: 1px solid #f1f1f2;
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Button = styled.button`
+  background: var(--accent);
+  font-size: 1.6rem;
+  padding: 1.3rem 2rem;
+  flex: 1;
+  max-width: 200px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: left;
+  display: flex;
+  align-items: center;
+
+  > svg {
+    margin-left: auto;
   }
 `

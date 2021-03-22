@@ -1,13 +1,17 @@
 import { motion } from 'framer-motion'
-import { device } from 'style/responsive'
+import { FC } from 'react'
 import styled from 'styled-components'
+import { device } from 'utils/style/responsive'
 
-const Sidebar = ({ sidebarHeading, children }) => {
+interface ISidebarProps {
+  sidebarHeading: string
+}
 
+const Sidebar: FC<ISidebarProps> = ({ sidebarHeading, children }) => {
   return (
     <Container animate={{ opacity: [0, 1], transition: { duration: 1 } }}>
       <SidebarHeading>{sidebarHeading}</SidebarHeading>
-        {children}
+      {children}
     </Container>
   )
 }

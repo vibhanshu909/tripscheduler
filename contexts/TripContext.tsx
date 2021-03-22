@@ -1,10 +1,8 @@
-import { createContext, useEffect, useReducer } from 'react'
+import { createContext, Dispatch, FC, useEffect, useReducer } from 'react'
 import { api } from 'services/httpService'
 
-export const TripContext = createContext()
-
 const initialState = {
-  trips: [],
+  trips: [] as any[],
   form: {
     address: {
       city: '',
@@ -19,12 +17,20 @@ const initialState = {
     end_date: '',
     start_date: '',
   },
-  countries: [],
+  countries: [] as any[],
   selectedCountry: '',
-  tripsFetched: false
 }
 
-const reducer = (state, action) => {
+type TripPayloadDispatchAction = {
+  type: string
+  payload?: any
+}
+
+type TripPayload = [typeof initialState, Dispatch<TripPayloadDispatchAction>]
+
+export const TripContext = createContext<TripPayload>(undefined as any)
+
+const reducer = (state: typeof initialState, action: TripPayloadDispatchAction) => {
   switch (action.type) {
     case 'SET_INITIAL':
       return {
@@ -45,21 +51,18 @@ const reducer = (state, action) => {
         },
         countries: [...state.countries],
         selectedCountry: '',
-        tripsFetched: true
       }
-      case 'EDIT_TRIP': 
-      
-      let newState =  {
+    case 'EDIT_TRIP':
+      let newState = {
         trips: [...state.trips],
-        form: {...state.form },
+        form: { ...state.form },
         countries: [...state.countries],
         selectedCountry: `flag-${state.selectedCountry}`,
-        tripsFetched: true
       }
-      let newTrip = {...state.form,id:action.payload.id}
-      newState.trips = newState.trips.filter(item=> item.id !== action.payload.id)
+      let newTrip = { ...state.form, id: action.payload.id }
+      newState.trips = newState.trips.filter((item) => item.id !== action.payload.id)
       newState.trips.push(newTrip)
-      return {...newState}
+      return { ...newState }
 
     case 'SET_TRIPS':
       return {
@@ -67,7 +70,6 @@ const reducer = (state, action) => {
         form: { ...state.form },
         countries: [...state.countries],
         selectedCountry: `flag-${state.selectedCountry}`,
-        tripsFetched: true
       }
     case 'ADD_TRIP':
       return {
@@ -77,13 +79,12 @@ const reducer = (state, action) => {
         selectedCountry: `flag-${state.selectedCountry}`,
       }
     case 'REMOVE_TRIP':
-      const filtered = [...state.trips.filter(trip => trip.id !== action.payload)]
+      const filtered = [...state.trips.filter((trip) => trip.id !== action.payload)]
       return {
         trips: filtered,
         form: { ...state.form },
         countries: [...state.countries],
         selectedCountry: `flag-${state.selectedCountry}`,
-        tripsFetched: true
       }
     case 'SET_COUNTRIES':
       return {
@@ -93,7 +94,7 @@ const reducer = (state, action) => {
         selectedCountry: `flag-${state.selectedCountry}`,
       }
     case 'SET_SELECTED_COUNTRY':
-      let tmp0 =  {
+      let tmp0 = {
         trips: [...state.trips],
         form: { ...state.form },
         countries: [...state.countries],
@@ -105,48 +106,48 @@ const reducer = (state, action) => {
       let tmp3 = state
       tmp3.form.company_name = action.payload.company_name
       return {
-        ...tmp3
+        ...tmp3,
       }
     case 'SET_Street':
       let tmp5 = state
       tmp5.form.address.street = action.payload.address.street
       return {
-        ...tmp5
+        ...tmp5,
       }
     case 'SET_StreetNumber':
       let tmpy = state
       tmpy.form.address.street_num = action.payload.address.street_num
       return {
-        ...tmpy
+        ...tmpy,
       }
     case 'SET_ZIP':
       let tmpp = state
       tmpp.form.address.zip = action.payload.address.zip
       return {
-        ...tmpp
+        ...tmpp,
       }
     case 'SET_Covid':
       let tmpp1 = state
       tmpp1.form.covid = action.payload.covid
-      return {...tmpp1}
-        
+      return { ...tmpp1 }
+
     case 'SET_CITY':
       let tmp4 = state
       tmp4.form.address.city = action.payload.address.city
       return {
-        ...state
+        ...state,
       }
     case 'SET_StartDate':
       let Tmp = state
       Tmp.form.start_date = action.payload.start_date
       return {
-        ...Tmp
+        ...Tmp,
       }
     case 'SET_EndDate':
       let Tmp2 = state
       Tmp2.form.end_date = action.payload.end_date
       return {
-        ...Tmp2
+        ...Tmp2,
       }
     case 'SET_FORM':
       return {
@@ -167,7 +168,7 @@ const reducer = (state, action) => {
   }
 }
 
-const TripProvider = ({ children }) => {
+const TripProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const fetchData = async () => {
@@ -181,10 +182,12 @@ const TripProvider = ({ children }) => {
   }, [])
 
   const fetchCountries = async () => {
-    const { data } = await api.get('/country')
+    const { data } = (await api.get('/country')) as {
+      data: { label: string }[]
+    }
     const sortedData = data.sort((a, b) => (a.label > b.label ? 1 : -1))
-    const countriesData = []
-    sortedData.forEach(data => {
+    const countriesData: any[] = []
+    sortedData.forEach((data: any) => {
       countriesData.push({
         value: data.value,
         label: data.label,
@@ -194,11 +197,7 @@ const TripProvider = ({ children }) => {
     dispatch({ type: 'SET_COUNTRIES', payload: countriesData })
   }
 
-  return (
-    <TripContext.Provider value={[state, dispatch]}>
-      {children}
-    </TripContext.Provider>
-  )
+  return <TripContext.Provider value={[state, dispatch]}>{children}</TripContext.Provider>
 }
 
 export default TripProvider

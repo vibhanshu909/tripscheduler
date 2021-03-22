@@ -1,8 +1,14 @@
-import { createGlobalStyle } from 'styled-components'
-
+import Arrow from 'assets/Arrow.svg'
+import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from 'styled-components'
 import { device } from './responsive'
 
-const GlobalStyle = createGlobalStyle`
+interface IGlobalStyleProps {
+  leftArrow: any
+  rightArrow: any
+  flags: any
+}
+
+const GlobalStyle: GlobalStyleComponent<IGlobalStyleProps, DefaultTheme> = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -181,7 +187,7 @@ const GlobalStyle = createGlobalStyle`
   .Dropdown-arrow {
     border: 0 !important;
     width: 12px; height: 7px;
-    background: url(Arrow) no-repeat center;
+    background: url(${Arrow}) no-repeat center;
   }
 
   .react-datepicker-popper {
@@ -298,12 +304,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .react-datepicker__navigation--previous {
-    background: var(--grey) url(${props => props.leftArrow}) no-repeat center;
+    background: var(--grey) url(${(props) => props.leftArrow}) no-repeat center;
     background-size: 12px
   }
 
   .react-datepicker__navigation--next {
-    background: var(--grey) url(${props => props.rightArrow}) no-repeat center;
+    background: var(--grey) url(${(props) => props.rightArrow}) no-repeat center;
     background-size: 12px
   }
 
@@ -312,7 +318,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .Dropdown-root .Dropdown-control {
-    background: url(${props => props.flags.globe}) no-repeat;
+    background: url(${(props) => props.flags.globe}) no-repeat;
     background-color: white !important;
 
     &:hover {
@@ -331,37 +337,37 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .Dropdown-root.flag-at .Dropdown-control, .Dropdown-option.flag-at {
-    background: url(${props => props.flags.at}) no-repeat;
+    background: url(${(props) => props.flags.at}) no-repeat;
   }
   .Dropdown-root.flag-cn .Dropdown-control, .Dropdown-option.flag-cn {
-    background: url(${props => props.flags.cn}) no-repeat;
+    background: url(${(props) => props.flags.cn}) no-repeat;
   }
   .Dropdown-root.flag-fr .Dropdown-control, .Dropdown-option.flag-fr {
-    background: url(${props => props.flags.fr}) no-repeat;
+    background: url(${(props) => props.flags.fr}) no-repeat;
   }
   .Dropdown-root.flag-gr .Dropdown-control, .Dropdown-option.flag-gr {
-    background: url(${props => props.flags.gr}) no-repeat;
+    background: url(${(props) => props.flags.gr}) no-repeat;
   }
   .Dropdown-root.flag-it .Dropdown-control, .Dropdown-option.flag-it {
-    background: url(${props => props.flags.it}) no-repeat;
+    background: url(${(props) => props.flags.it}) no-repeat;
   }
   .Dropdown-root.flag-aw .Dropdown-control, .Dropdown-option.flag-aw {
-    background: url(${props => props.flags.aw}) no-repeat;
+    background: url(${(props) => props.flags.aw}) no-repeat;
   }
   .Dropdown-root.flag-pt .Dropdown-control, .Dropdown-option.flag-pt {
-    background: url(${props => props.flags.pt}) no-repeat;
+    background: url(${(props) => props.flags.pt}) no-repeat;
   }
   .Dropdown-root.flag-sk .Dropdown-control, .Dropdown-option.flag-sk {
-    background: url(${props => props.flags.sk}) no-repeat;
+    background: url(${(props) => props.flags.sk}) no-repeat;
   }
   .Dropdown-root.flag-es .Dropdown-control, .Dropdown-option.flag-es {
-    background: url(${props => props.flags.es}) no-repeat;
+    background: url(${(props) => props.flags.es}) no-repeat;
   }
   .Dropdown-root.flag-se .Dropdown-control, .Dropdown-option.flag-se {
-    background: url(${props => props.flags.se}) no-repeat;
+    background: url(${(props) => props.flags.se}) no-repeat;
   }
   .Dropdown-root.flag-uk .Dropdown-control, .Dropdown-option.flag-uk {
-    background: url(${props => props.flags.uk}) no-repeat;
+    background: url(${(props) => props.flags.uk}) no-repeat;
   }
 
   .Dropdown-root .Dropdown-control {
