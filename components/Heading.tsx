@@ -1,21 +1,34 @@
-import { useContext } from 'react'
-import styled from 'styled-components'
-
-import { device } from 'style/responsive'
 import { MenuContext } from 'contexts/MenuContext'
+import { FC, useContext } from 'react'
+import styled from 'styled-components'
+import { device } from 'utils/style/responsive'
 
-const Heading = ({ title }) => {
-  
+interface IHeadingProps {
+  title: string
+}
+
+const Heading: FC<IHeadingProps> = ({ title }) => {
   const menuCtx = useContext(MenuContext)
 
   return (
     <HeadingStyled>
-      {window.matchMedia('(max-width: 600px)') && (
+      {/* {process.browser && window.matchMedia('(max-width: 600px)') && ( */}
+      <div className='close-menu'>
         <OpenMenu onClick={menuCtx.toggleMenu}>
           <span />
         </OpenMenu>
-      )}
+      </div>
+      {/* )} */}
       {title}
+      <style jsx>
+        {`
+          @media (max-width: 600px) {
+            .close-menu {
+              display: initial;
+            }
+          }
+        `}
+      </style>
     </HeadingStyled>
   )
 }

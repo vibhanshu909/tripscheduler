@@ -1,58 +1,63 @@
-import { useContext } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
-
+import ClockIcon from 'assets/Clock.svg'
+import Close from 'assets/Close.svg'
+import EditIcon from 'assets/Edit.svg'
+import GlobeIcon from 'assets/Globe.svg'
+import LogoIcon from 'assets/Logo.svg'
+import Plus from 'assets/Plus.svg'
 import { MenuContext } from 'contexts/MenuContext'
-
-import { device } from 'style/responsive'
-import { ReactComponent as ClockIcon } from 'assets/Clock.svg'
-import { ReactComponent as Close } from 'assets/Close.svg'
-import { ReactComponent as EditIcon } from 'assets/Edit.svg'
-import { ReactComponent as GlobeIcon } from 'assets/Globe.svg'
-import { ReactComponent as LogoIcon } from 'assets/Logo.svg'
-import { ReactComponent as Plus } from 'assets/Plus.svg'
+import { motion } from 'framer-motion'
+import React, { useContext } from 'react'
+import styled from 'styled-components'
+import { device } from 'utils/style/responsive'
+import Anchor from './Anchor'
+import SVGIcon from './SVGIcon'
 
 const NavMenu = () => {
-  const menuCtx = useContext(MenuContext)
+  const menuCtx = useContext<any>(MenuContext)
 
   return (
     <Nav className={`${menuCtx.isMenuOpen ? 'menu--active' : ''}`}>
       <Container>
-        {window.matchMedia(device.tablet) && (
-          <CloseMenu onClick={menuCtx.toggleMenu}>
-            <Close width={12} height={12} />
-          </CloseMenu>
-        )}
+        {/* {process.browser && window.matchMedia(device.tablet) && ( */}
+        {/* <div className='close-menu'> */}
+        <CloseMenu onClick={menuCtx.toggleMenu}>
+          <SVGIcon icon={Close} width={12} height={12} style={{ marginLeft: 0 }} />
+        </CloseMenu>
+        {/* </div> */}
+        {/* )} */}
         <Logo>
-          <Link to="/">
-            <LogoIcon width={120} />
-          </Link>
+          <Anchor href='/'>
+            <SVGIcon icon={LogoIcon} width={120} />
+          </Anchor>
         </Logo>
 
         <MenuItems>
-          <StyledNavLink onClick={menuCtx.toggleMenu} to="/new-trip">
-            <NewTrip
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
-              }}
-            >
-              New Trip
-              <Plus width={16} height={16} />
-            </NewTrip>
-          </StyledNavLink>
+          <Anchor href='/newTrip' skipATag>
+            <StyledNavLink onClick={menuCtx.toggleMenu}>
+              <NewTrip
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+                }}
+              >
+                New Trip
+                <SVGIcon icon={Plus} width={16} height={16} />
+              </NewTrip>
+            </StyledNavLink>
+          </Anchor>
 
           <MenuItem animate={{ x: [-200, 10, 0], transition: { duration: 1 } }}>
-            <StyledNavLink onClick={menuCtx.toggleMenu} to={`/`}>
-              <IconWrap>
-                <ClockIcon width={16} height={16} />
-              </IconWrap>
-              Your trips
-            </StyledNavLink>
+            <Anchor href='/' passHref skipATag>
+              <StyledNavLink onClick={() => menuCtx.toggleMenu()}>
+                <IconWrap>
+                  <SVGIcon icon={ClockIcon} width={16} height={16} />
+                </IconWrap>
+                Your trips
+              </StyledNavLink>
+            </Anchor>
           </MenuItem>
 
           <MenuItem
@@ -63,7 +68,7 @@ const NavMenu = () => {
           >
             <NonClickableLink onClick={menuCtx.toggleMenu}>
               <IconWrap>
-                <EditIcon width={16} height={16} />
+                <SVGIcon icon={EditIcon} width={16} height={16} />
               </IconWrap>
               Future feature
             </NonClickableLink>
@@ -77,7 +82,7 @@ const NavMenu = () => {
           >
             <NonClickableLink onClick={menuCtx.toggleMenu}>
               <IconWrap>
-                <GlobeIcon width={16} height={16} />
+                <SVGIcon icon={GlobeIcon} width={16} height={16} />
               </IconWrap>
               Future section
             </NonClickableLink>
@@ -180,7 +185,7 @@ const MenuItem = styled(motion.li)`
   cursor: pointer;
 `
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled.a`
   text-decoration: none;
   color: black;
   display: flex;

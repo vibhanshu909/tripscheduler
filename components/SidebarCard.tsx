@@ -1,86 +1,29 @@
+import ArrowRight from 'assets/ArrowRight.svg'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import React, { FC } from 'react'
 import styled from 'styled-components'
+import { FlagMap } from '../utils/FlagMap'
+import Anchor from './Anchor'
+import SVGIcon from './SVGIcon'
 
-import { ReactComponent as ArrowRight } from 'assets/ArrowRight.svg'
-import { ReactComponent as AustriaFlag } from 'assets/flags/austria.svg'
-import { ReactComponent as ChinaFlag } from 'assets/flags/china.svg'
-import { ReactComponent as FranceFlag } from 'assets/flags/france.svg'
-import { ReactComponent as GreeceFlag } from 'assets/flags/greece.svg'
-import { ReactComponent as ItalyFlag } from 'assets/flags/italy.svg'
-import { ReactComponent as NetherlandsFlag } from 'assets/flags/netherlands.svg'
-import { ReactComponent as PortugalFlag } from 'assets/flags/portugal.svg'
-import { ReactComponent as SlovakiaFlag } from 'assets/flags/slovakia.svg'
-import { ReactComponent as SpainFlag } from 'assets/flags/spain.svg'
-import { ReactComponent as SwedenFlag } from 'assets/flags/sweden.svg'
-import { ReactComponent as UnitedKingdomFlag } from 'assets/flags/united-kingdom.svg'
-
-const FlagIcon = ({ flag }) => {
-  switch (flag) {
-    case 'at':
-      return <AustriaFlag width={40} height={40} />
-    case 'cn':
-      return <ChinaFlag width={40} height={40} />
-    case 'fr':
-      return <FranceFlag width={40} height={40} />
-    case 'gr':
-      return <GreeceFlag width={40} height={40} />
-    case 'it':
-      return <ItalyFlag width={40} height={40} />
-    case 'aw':
-      return <NetherlandsFlag width={40} height={40} />
-    case 'pt':
-      return <PortugalFlag width={40} height={40} />
-    case 'sk':
-      return <SlovakiaFlag width={40} height={40} />
-    case 'es':
-      return <SpainFlag width={40} height={40} />
-    case 'se':
-      return <SwedenFlag width={40} height={40} />
-    case 'uk':
-      return <UnitedKingdomFlag width={40} height={40} />
-    default:
-      return null
-  }
+interface ISidebarCardProps {
+  country: string
+  company: string
+  date: string
+  address: string
+  id: string
 }
-
-const FlagName = ({ flag }) => {
-  switch (flag) {
-    case 'at':
-      return 'Austria'
-    case 'cn':
-      return 'China'
-    case 'fr':
-      return 'France'
-    case 'gr':
-      return 'Greece'
-    case 'it':
-      return 'Italy'
-    case 'aw':
-      return 'Netherlands'
-    case 'pt':
-      return 'Portugal'
-    case 'sk':
-      return 'Slovakia'
-    case 'es':
-      return 'Spain'
-    case 'se':
-      return 'Sweden'
-    case 'uk':
-      return 'United Kingdom'
-    default:
-      return null
-  }
-}
-
-const SidebarCard = ({ country, company, date, address, id }) => {
+const SidebarCard: FC<ISidebarCardProps> = ({ country, company, date, address, id }) => {
   return (
-    <TripRowStyles animate={{opacity: [0, 1], transition: { duration: 1.2 } }}>
+    <TripRowStyles animate={{ opacity: [0, 1], transition: { duration: 1.2 } }}>
       <FlagColumn>
-        <FlagIcon width={40} height={40} flag={country} />
-        <MobileCountry>
-          <FlagName flag={country} />
-        </MobileCountry>
+        <SVGIcon
+          icon={FlagMap[country as keyof typeof FlagMap].icon}
+          width={40}
+          height={40}
+          style={{ marginLeft: 0 }}
+        />
+        <MobileCountry>{FlagMap[country as keyof typeof FlagMap].name}</MobileCountry>
       </FlagColumn>
 
       <TripColumn>
@@ -102,7 +45,7 @@ const SidebarCard = ({ country, company, date, address, id }) => {
       </TripColumn>
 
       <ActionButtons>
-        <Link to={`/view-trip/${id}`}>
+        <Anchor href={`/viewTrip/${id}`}>
           <ViewButton
             whileHover={{
               scale: 1.05,
@@ -111,9 +54,9 @@ const SidebarCard = ({ country, company, date, address, id }) => {
             }}
           >
             <MobileLabel>View Trip</MobileLabel>
-            <ArrowRight width={16} height={10} />
+            <SVGIcon icon={ArrowRight} width={16} height={10} />
           </ViewButton>
-        </Link>
+        </Anchor>
       </ActionButtons>
     </TripRowStyles>
   )

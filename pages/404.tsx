@@ -4,11 +4,9 @@ import styled from 'styled-components'
 const NotFound = () => {
   return (
     <Container>
-
       <Main>
         <NotFoundStyled>Page not found</NotFoundStyled>
       </Main>
-      
     </Container>
   )
 }
@@ -29,7 +27,7 @@ const Main = styled.main`
 `
 
 const NotFoundStyled = styled.div`
-  display: flex;                                      
+  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 7rem;

@@ -1,75 +1,52 @@
-import { useContext, useState } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import Modal from 'react-modal'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-
-import { api } from 'services/httpService'
+import ArrowRight from 'assets/ArrowRight.svg'
+import RemoveIcon from 'assets/Remove.svg'
 import { TripContext } from 'contexts/TripContext'
+import { HTMLMotionProps, motion, useAnimation } from 'framer-motion'
+import React, { FC, useContext, useState } from 'react'
+import Modal from 'react-modal'
+import { api } from 'services/httpService'
+import styled from 'styled-components'
+import { FlagMap } from 'utils/FlagMap'
+import { device } from 'utils/style/responsive'
+import Anchor from './Anchor'
+import SVGIcon from './SVGIcon'
 
-import { device } from 'style/responsive'
-import { ReactComponent as ArrowRight } from 'assets/ArrowRight.svg'
-import { ReactComponent as RemoveIcon } from 'assets/Remove.svg'
+const customStyles = {
+  content: {
+    top: '45%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '500px',
+  },
+} as const
 
-const TripRow = ({ country, company, date, id, address }) => {
-
+interface ITripRow extends HTMLMotionProps<'div'> {
+  country: string
+  company: string
+  date: Date | string
+  id: string
+  address: string
+}
+const TripRow: FC<ITripRow> = ({ country, company, date, id, address }) => {
   const [modalIsOpen, setIsOpen] = useState(false)
-  const [, dispatch] = useContext(TripContext)
+  const dispatch = useContext(TripContext)[1]
   const animation = useAnimation()
 
-  const getFlag = flag => {
-    switch (flag) {
-      case 'at':
-        return 'austria'
-      case 'cn':
-        return 'china'
-      case 'fr':
-        return 'france'
-      case 'gr':
-        return 'greece'
-      case 'it':
-        return 'italy'
-      case 'aw':
-        return 'netherlands'
-      case 'pt':
-        return 'portugal'
-      case 'sk':
-        return 'slovakia'
-      case 'es':
-        return 'spain'
-      case 'se':
-        return 'sweden'
-      case 'uk':
-        return 'united-kingdom'
-      default:
-        return null
-    }
-  }
+  const flag = country.toLowerCase().split(' ').join('-') as keyof typeof FlagMap
+  const image = FlagMap[flag].icon
 
-  const flag = country.toLowerCase().split(' ').join('-')
-  const image = require('assets/flags/' + getFlag(flag) + '.svg').default
-
-  const removeTrip = async id => {
+  const removeTrip = async (id: string) => {
     try {
       await api.delete(`/trip/${id}`)
       setIsOpen(false)
       dispatch({ type: 'REMOVE_TRIP', payload: id })
     } catch (error) {
       alert('Something went wrong while deleting trip')
-      console.log(error.message)//dlme
+      console.log(error.message) //dlme
     }
-  }
-
-  const customStyles = {
-    content: {
-      top: '45%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '500px',
-    },
   }
 
   async function sequence() {
@@ -85,14 +62,14 @@ const TripRow = ({ country, company, date, id, address }) => {
         isOpen={modalIsOpen}
         style={customStyles}
         ariaHideApp={false}
-        onRequestClose={()=> setIsOpen(false)}
+        onRequestClose={() => setIsOpen(false)}
       >
         <Form
           initial={{ opacity: 0, scale: 0.75 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
         >
-          <Label htmlFor="q">Are you sure you want to delete this trip?</Label>
+          <Label htmlFor='q'>Are you sure you want to delete this trip?</Label>
           <FormButtonGroup>
             <AcceptDeleteButton
               onClick={() => removeTrip(id)}
@@ -105,7 +82,7 @@ const TripRow = ({ country, company, date, id, address }) => {
               Delete
             </AcceptDeleteButton>
             <AcceptCancelButton
-              onClick={()=> setIsOpen(false)}
+              onClick={() => setIsOpen(false)}
               whileHover={{
                 scale: 1.15,
                 translateY: -10,
@@ -121,26 +98,24 @@ const TripRow = ({ country, company, date, id, address }) => {
         initial={{ y: -200 }}
         animate={animation}
         onLoad={sequence}
-        ariaHideApp={false}
+        // ariaHideApp={false}
         whileHover={{ boxShadow: '2px 6px 10px rgba(0,0,0,0.3)' }}
       >
         <FlagColumn>
-          <img src={image} width={32} height={32} alt={country} />
+          <SVGIcon icon={image} width={32} height={32} style={{ marginLeft: 0 }} />
           <MobileCountry>{country}</MobileCountry>
         </FlagColumn>
 
         <TripColumn>
           <TripRowInline>
-            <Link to={`/view-trip/${id}`}>
-              <Country style={{ color: 'black' }}>
-                {getFlag(country)}
-              </Country>
-            </Link>
+            <Anchor href={`/viewTrip/${id}`}>
+              <Country style={{ color: 'black' }}>{FlagMap[flag].country}</Country>
+            </Anchor>
             <Separator />
             <TripDate>
               <MobileLabel>Date</MobileLabel>
               <strong>
-                <div className="innerWrapper">{date}</div>
+                <div className='innerWrapper'>{date}</div>
               </strong>
             </TripDate>
           </TripRowInline>
@@ -151,7 +126,7 @@ const TripRow = ({ country, company, date, id, address }) => {
             </Company>
             <Separator />
             <Address>
-              <div className="innerWrapper">{address}</div>
+              <div className='innerWrapper'>{address}</div>
             </Address>
           </TripRowInline>
         </TripColumn>
@@ -164,9 +139,9 @@ const TripRow = ({ country, company, date, id, address }) => {
               boxShadow: '1px 1px 3px rgba(0,0,0,0.3)',
             }}
           >
-            <RemoveIcon width={11} height={16} />
+            <SVGIcon icon={RemoveIcon} width={11} height={16} />
           </RemoveButton>
-          <Link to={`/edit-trip/${id}`}>
+          <Anchor href={`/editTrip/${id}`}>
             <ViewButton
               whileHover={{
                 scale: 1.05,
@@ -175,14 +150,16 @@ const TripRow = ({ country, company, date, id, address }) => {
               }}
             >
               <MobileLabel>View Trip</MobileLabel>
-              <ArrowRight width={16} height={10} />
+              <SVGIcon icon={ArrowRight} width={16} height={10} />
             </ViewButton>
-          </Link>
+          </Anchor>
         </ActionButtons>
       </TripRowStyles>
     </div>
   )
 }
+
+export default TripRow
 
 const Label = styled.label`
   display: block;
@@ -462,5 +439,3 @@ const ViewButton = styled(motion.button)`
     }
   }
 `
-
-export default TripRow
