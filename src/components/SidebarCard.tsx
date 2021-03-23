@@ -2,7 +2,7 @@ import ArrowRight from 'assets/ArrowRight.svg'
 import { motion } from 'framer-motion'
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { FlagMap } from '../utils/FlagMap'
+import { FlagMap } from 'utils/FlagMap'
 import Anchor from './Anchor'
 import SVGIcon from './SVGIcon'
 

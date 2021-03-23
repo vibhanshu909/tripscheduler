@@ -1,7 +1,7 @@
-import Heading from 'components/Heading'
-import Sidebar from 'components/Sidebar'
-import SidebarCard from 'components/SidebarCard'
-import { TripContext } from 'contexts/TripContext'
+import Heading from 'src/components/Heading'
+import Sidebar from 'src/components/Sidebar'
+import SidebarCard from 'src/components/SidebarCard'
+import { TripContext } from 'src/contexts/TripContext'
 import { motion } from 'framer-motion'
 import moment from 'moment'
 import { GetServerSideProps, NextPage } from 'next'
@@ -11,9 +11,9 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import Loader from 'react-loader-spinner'
-import { api } from 'services/httpService'
+import { api } from 'src/services/httpService'
 import styled from 'styled-components'
-import { device } from 'utils/style/responsive'
+import { device } from 'src/utils/style/responsive'
 
 const ViewTrip: NextPage<{ id: string }> = ({ id }) => {
   const [state, dispatch] = useContext(TripContext)
