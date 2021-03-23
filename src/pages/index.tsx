@@ -2,7 +2,6 @@ import Heading from 'components/Heading'
 import Sidebar from 'components/Sidebar'
 import TripRow from 'components/TripRow'
 import { TripContext } from 'contexts/TripContext'
-import { motion } from 'framer-motion'
 import moment from 'moment'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
@@ -16,18 +15,6 @@ const Trips = () => {
   return (
     <Container>
       <Main>
-        <svg>
-          <motion.path
-            animate={{ y: 100 }}
-            d='M1659.16,371.41L1659.16,292.05'
-            style={{
-              fill: 'none',
-              fillRule: 'nonzero',
-              stroke: 'rgb(165,190,255)',
-              strokeWidth: '3px',
-            }}
-          ></motion.path>
-        </svg>
         <Heading title='Your trips' />
         <AllTrips>
           {state?.trips.length === 0
