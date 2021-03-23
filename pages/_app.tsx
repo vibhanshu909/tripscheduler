@@ -17,7 +17,7 @@ import MenuProvider from 'contexts/MenuContext'
 import TripProvider from 'contexts/TripContext'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import React from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import GlobalStyle from 'utils/style/global'
 import { device } from 'utils/style/responsive'
@@ -37,7 +37,7 @@ const flags = {
   uk: UnitedKingdomFlag,
 } as const
 
-const App: NextPage<any, any> = ({ Component, pageProps }) => {
+export const Provider: FC<any> = ({ children }) => {
   return (
     <>
       <Head>
@@ -59,14 +59,49 @@ const App: NextPage<any, any> = ({ Component, pageProps }) => {
         <Container className='App'>
           <TripProvider>
             <NavMenu />
-            <Main>
-              <Component {...pageProps} />
-            </Main>
+            <Main>{children}</Main>
           </TripProvider>
         </Container>
       </MenuProvider>
     </>
   )
+}
+
+const App: NextPage<any, any> = ({ Component, pageProps }) => {
+  return (
+    <Provider>
+      <Component {...pageProps} />
+    </Provider>
+  )
+  // return (
+  //   <>
+  //     <Head>
+  //       <link rel='icon' href='/cleevio.svg' />
+  //       <meta name='viewport' content='width=device-width, initial-scale=1' />
+  //       <meta name='theme-color' content='#000000' />
+  //       <meta name='Cleevio trips MVP' content='Keep track of your trips' />
+  //       <link rel='apple-touch-icon' href='/cleevio.svg' />
+
+  //       <link rel='manifest' href='/manifest.json' />
+  //       <link rel='preconnect' href='https://fonts.gstatic.com'></link>
+  //       <link
+  //         href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=optional'
+  //         rel='stylesheet'
+  //       />
+  //     </Head>
+  //     <GlobalStyle leftArrow={DatePickerLeft} rightArrow={DatePickerRight} flags={flags} />
+  //     <MenuProvider>
+  //       <Container className='App'>
+  //         <TripProvider>
+  //           <NavMenu />
+  //           <Main>
+
+  //           </Main>
+  //         </TripProvider>
+  //       </Container>
+  //     </MenuProvider>
+  //   </>
+  // )
 }
 
 export default App

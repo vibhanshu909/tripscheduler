@@ -6,12 +6,14 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc",
-    "format": "prettier --write '**/*.(tsx|jsx|ts|js)'"
+    "type-check": "tsc --pretty --noEmit",
+    "format": "prettier --write '**/*.(tsx|jsx|ts|js)'",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "framer-motion": "^4.0.0",
+    "jest-dom": "^4.0.0",
     "moment": "^2.29.1",
     "next": "latest",
     "next-images": "^1.7.0",
@@ -24,13 +26,20 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@svgr/webpack": "^5.5.0",
+    "@testing-library/react": "^11.2.5",
+    "@types/jest": "^26.0.21",
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.3",
     "@types/react-datepicker": "^3.1.8",
     "@types/react-dom": "^17.0.2",
     "@types/react-modal": "^3.12.0",
     "@types/styled-components": "^5.1.9",
+    "babel-jest": "^26.6.3",
     "babel-plugin-styled-components": "^1.12.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.3",
+    "jest-watch-typeahead": "^0.6.1",
     "prettier": "^2.2.1",
     "typescript": "4.2"
   },

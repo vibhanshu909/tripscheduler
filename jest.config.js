@@ -1,0 +1,43 @@
+module.exports = {
+  roots: [
+    '<rootDir>',
+    // '<rootDir>/pages',
+    // '<rootDir>/components',
+    // '<rootDir>/contexts',
+    // '<rootDir>/services',
+    // '<rootDir>/utils',
+    // '<rootDir>/assets',
+  ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'json', 'jsx'],
+  testPathIgnorePatterns: ['<rootDir>[/\\\\](node_modules|.next)[/\\\\]'],
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'babel-jest',
+  },
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+  moduleDirectories: [
+    'node_modules',
+    '<rootDir>',
+    // '<rootDir>/pages',
+    // '<rootDir>/components',
+    // '<rootDir>/contexts',
+    // '<rootDir>/services',
+    // '<rootDir>/utils',
+    '<rootDir>/assets',
+  ],
+  modulesDirectories: [
+    //   'node_modules',
+    //   '<rootDir>/pages',
+    //   '<rootDir>/components',
+    //   '<rootDir>/contexts',
+    //   '<rootDir>/services',
+    //   '<rootDir>/utils',
+    '<rootDir>/assets',
+  ],
+  moduleNameMapper: {
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '^.+\\.svg$': 'jest-svg-transformer',
+    // '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
+    // '\\.(gif|ttf|eot|svg|png)$': 'identity-obj-proxy',
+  },
+}
