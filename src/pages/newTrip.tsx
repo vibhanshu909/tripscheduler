@@ -7,7 +7,7 @@ import SVGIcon from 'components/SVGIcon'
 import { TripContext } from 'contexts/TripContext'
 import { motion } from 'framer-motion'
 import moment from 'moment'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FormEventHandler, useContext, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import Dropdown from 'react-dropdown'
@@ -37,7 +37,8 @@ const NewTrip = () => {
   const [endDateMin, setEndDateMin] = useState(moment().toDate())
   const [endDateVal, setEndDateVal] = useState<string | Date>('')
 
-  const addNewTrip = async () => {
+  const addNewTrip: FormEventHandler = async (e) => {
+    e.preventDefault()
     let resp
     try {
       resp = await api.post('/trip', state.form)
@@ -83,7 +84,7 @@ const NewTrip = () => {
             </FormButtonGroup>
           </Form>
         </Modal>
-        <Form>
+        <Form onSubmit={addNewTrip}>
           <FormContent>
             <InnerForm>
               <FormGroup>
@@ -327,7 +328,7 @@ const NewTrip = () => {
           </FormContent>
 
           <FormFooter>
-            <Button type='button' onClick={() => addNewTrip()}>
+            <Button type='submit'>
               Save
               <SVGIcon icon={Check} width={16} height={12} />
             </Button>
