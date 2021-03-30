@@ -21,7 +21,9 @@ import React from 'react'
 import styled from 'styled-components'
 import GlobalStyle from 'utils/style/global'
 import { device } from 'utils/style/responsive'
+import { init } from '../utils/sentry'
 
+init()
 const flags = {
   globe: GlobeIcon,
   at: AustriaFlag,
