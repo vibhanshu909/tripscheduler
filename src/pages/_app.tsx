@@ -1,17 +1,3 @@
-import DatePickerLeft from 'assets/DatePickerLeft.svg'
-import DatePickerRight from 'assets/DatePickerRight.svg'
-import GlobeIcon from 'assets/DropdownGlobe.svg'
-import AustriaFlag from 'assets/flags/austria.svg'
-import ChinaFlag from 'assets/flags/china.svg'
-import FranceFlag from 'assets/flags/france.svg'
-import GreeceFlag from 'assets/flags/greece.svg'
-import ItalyFlag from 'assets/flags/italy.svg'
-import NetherlandsFlag from 'assets/flags/netherlands.svg'
-import PortgualFlag from 'assets/flags/portugal.svg'
-import SlovakiaFlag from 'assets/flags/slovakia.svg'
-import SpainFlag from 'assets/flags/spain.svg'
-import SweedenFlag from 'assets/flags/sweden.svg'
-import UnitedKingdomFlag from 'assets/flags/united-kingdom.svg'
 import NavMenu from 'components/NavMenu'
 import MenuProvider from 'contexts/MenuContext'
 import TripProvider from 'contexts/TripContext'
@@ -24,20 +10,6 @@ import { device } from 'utils/style/responsive'
 import { init } from '../utils/sentry'
 
 init()
-const flags = {
-  globe: GlobeIcon,
-  at: AustriaFlag,
-  cn: ChinaFlag,
-  fr: FranceFlag,
-  gr: GreeceFlag,
-  it: ItalyFlag,
-  aw: NetherlandsFlag,
-  pt: PortgualFlag,
-  sk: SlovakiaFlag,
-  es: SpainFlag,
-  se: SweedenFlag,
-  uk: UnitedKingdomFlag,
-} as const
 
 const App: NextPage<any, any> = ({ Component, pageProps }) => {
   return (
@@ -56,7 +28,7 @@ const App: NextPage<any, any> = ({ Component, pageProps }) => {
           rel='stylesheet'
         />
       </Head>
-      <GlobalStyle leftArrow={DatePickerLeft} rightArrow={DatePickerRight} flags={flags} />
+      <GlobalStyle />
       <MenuProvider>
         <Container className='App'>
           <TripProvider>
