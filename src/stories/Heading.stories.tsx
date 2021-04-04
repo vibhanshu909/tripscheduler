@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/react'
 import Heading, { IHeadingProps } from 'components/Heading'
 import MenuProvider from 'contexts/MenuContext'
 import React from 'react'
+import GlobalStyle from 'utils/style/global'
 
 export default {
   title: 'Components/Heading',
@@ -9,9 +10,12 @@ export default {
 } as Meta
 
 const Template: Story<IHeadingProps> = (args) => (
-  <MenuProvider>
-    <Heading {...args} />
-  </MenuProvider>
+  <>
+    <GlobalStyle />
+    <MenuProvider>
+      <Heading {...args} />
+    </MenuProvider>
+  </>
 )
 
 export const Primary = Template.bind({})
