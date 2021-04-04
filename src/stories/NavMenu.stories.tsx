@@ -2,6 +2,7 @@ import { Meta, Story } from '@storybook/react'
 import NavMenu from 'components/NavMenu'
 import MenuProvider from 'contexts/MenuContext'
 import React from 'react'
+import GlobalStyle from 'utils/style/global'
 
 export default {
   title: 'Components/NavMenu',
@@ -9,9 +10,13 @@ export default {
 } as Meta
 
 const Template: Story<{}> = (args) => (
-  <MenuProvider>
-    <NavMenu {...args} />
-  </MenuProvider>
+  <>
+    <GlobalStyle />
+
+    <MenuProvider>
+      <NavMenu {...args} />
+    </MenuProvider>
+  </>
 )
 
 export const Primary = Template.bind({})
