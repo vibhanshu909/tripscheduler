@@ -6,7 +6,7 @@ import { FlagMap } from 'utils/FlagMap'
 import Anchor from './Anchor'
 import SVGIcon from './SVGIcon'
 
-interface ISidebarCardProps {
+export interface ISidebarCardProps {
   country: string
   company: string
   date: string

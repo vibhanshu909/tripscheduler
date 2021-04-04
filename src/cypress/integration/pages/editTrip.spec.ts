@@ -1,4 +1,4 @@
-import { submitForm } from 'support/submitForm'
+import { submitForm } from '../../support/submitForm'
 
 describe('Edit Trip', () => {
   beforeEach(() => {

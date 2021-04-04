@@ -1,14 +1,37 @@
 import Arrow from 'assets/Arrow.svg'
+import DatePickerLeft from 'assets/DatePickerLeft.svg'
+import DatePickerRight from 'assets/DatePickerRight.svg'
+import GlobeIcon from 'assets/DropdownGlobe.svg'
+import AustriaFlag from 'assets/flags/austria.svg'
+import ChinaFlag from 'assets/flags/china.svg'
+import FranceFlag from 'assets/flags/france.svg'
+import GreeceFlag from 'assets/flags/greece.svg'
+import ItalyFlag from 'assets/flags/italy.svg'
+import NetherlandsFlag from 'assets/flags/netherlands.svg'
+import PortgualFlag from 'assets/flags/portugal.svg'
+import SlovakiaFlag from 'assets/flags/slovakia.svg'
+import SpainFlag from 'assets/flags/spain.svg'
+import SweedenFlag from 'assets/flags/sweden.svg'
+import UnitedKingdomFlag from 'assets/flags/united-kingdom.svg'
 import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from 'styled-components'
 import { device } from './responsive'
 
-interface IGlobalStyleProps {
-  leftArrow: any
-  rightArrow: any
-  flags: any
-}
+const flags = {
+  globe: GlobeIcon,
+  at: AustriaFlag,
+  cn: ChinaFlag,
+  fr: FranceFlag,
+  gr: GreeceFlag,
+  it: ItalyFlag,
+  aw: NetherlandsFlag,
+  pt: PortgualFlag,
+  sk: SlovakiaFlag,
+  es: SpainFlag,
+  se: SweedenFlag,
+  uk: UnitedKingdomFlag,
+} as const
 
-const GlobalStyle: GlobalStyleComponent<IGlobalStyleProps, DefaultTheme> = createGlobalStyle`
+const GlobalStyle: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -304,12 +327,12 @@ const GlobalStyle: GlobalStyleComponent<IGlobalStyleProps, DefaultTheme> = creat
   }
 
   .react-datepicker__navigation--previous {
-    background: var(--grey) url(${(props) => props.leftArrow}) no-repeat center;
+    background: var(--grey) url(${DatePickerLeft}) no-repeat center;
     background-size: 12px
   }
 
   .react-datepicker__navigation--next {
-    background: var(--grey) url(${(props) => props.rightArrow}) no-repeat center;
+    background: var(--grey) url(${DatePickerRight}) no-repeat center;
     background-size: 12px
   }
 
@@ -318,7 +341,7 @@ const GlobalStyle: GlobalStyleComponent<IGlobalStyleProps, DefaultTheme> = creat
   }
 
   .Dropdown-root .Dropdown-control {
-    background: url(${(props) => props.flags.globe}) no-repeat;
+    background: url(${flags.globe}) no-repeat;
     background-color: white !important;
 
     &:hover {
@@ -337,37 +360,37 @@ const GlobalStyle: GlobalStyleComponent<IGlobalStyleProps, DefaultTheme> = creat
   }
 
   .Dropdown-root.flag-at .Dropdown-control, .Dropdown-option.flag-at {
-    background: url(${(props) => props.flags.at}) no-repeat;
+    background: url(${flags.at}) no-repeat;
   }
   .Dropdown-root.flag-cn .Dropdown-control, .Dropdown-option.flag-cn {
-    background: url(${(props) => props.flags.cn}) no-repeat;
+    background: url(${flags.cn}) no-repeat;
   }
   .Dropdown-root.flag-fr .Dropdown-control, .Dropdown-option.flag-fr {
-    background: url(${(props) => props.flags.fr}) no-repeat;
+    background: url(${flags.fr}) no-repeat;
   }
   .Dropdown-root.flag-gr .Dropdown-control, .Dropdown-option.flag-gr {
-    background: url(${(props) => props.flags.gr}) no-repeat;
+    background: url(${flags.gr}) no-repeat;
   }
   .Dropdown-root.flag-it .Dropdown-control, .Dropdown-option.flag-it {
-    background: url(${(props) => props.flags.it}) no-repeat;
+    background: url(${flags.it}) no-repeat;
   }
   .Dropdown-root.flag-aw .Dropdown-control, .Dropdown-option.flag-aw {
-    background: url(${(props) => props.flags.aw}) no-repeat;
+    background: url(${flags.aw}) no-repeat;
   }
   .Dropdown-root.flag-pt .Dropdown-control, .Dropdown-option.flag-pt {
-    background: url(${(props) => props.flags.pt}) no-repeat;
+    background: url(${flags.pt}) no-repeat;
   }
   .Dropdown-root.flag-sk .Dropdown-control, .Dropdown-option.flag-sk {
-    background: url(${(props) => props.flags.sk}) no-repeat;
+    background: url(${flags.sk}) no-repeat;
   }
   .Dropdown-root.flag-es .Dropdown-control, .Dropdown-option.flag-es {
-    background: url(${(props) => props.flags.es}) no-repeat;
+    background: url(${flags.es}) no-repeat;
   }
   .Dropdown-root.flag-se .Dropdown-control, .Dropdown-option.flag-se {
-    background: url(${(props) => props.flags.se}) no-repeat;
+    background: url(${flags.se}) no-repeat;
   }
   .Dropdown-root.flag-uk .Dropdown-control, .Dropdown-option.flag-uk {
-    background: url(${(props) => props.flags.uk}) no-repeat;
+    background: url(${flags.uk}) no-repeat;
   }
 
   .Dropdown-root .Dropdown-control {

@@ -1,29 +1,44 @@
 import Check from 'assets/Check.svg'
 import Anchor from 'components/Anchor'
+import {
+  AcceptDeleteButton,
+  Button,
+  Container,
+  DatePickerWrap,
+  DPDown,
+  Form,
+  FormButtonGroup,
+  FormContent,
+  FormFooter,
+  FormGroup,
+  FormInnerGroup,
+  InnerForm,
+  Label,
+  LabelQuestion,
+  Main,
+  RadioButton,
+  RadioButtonGroup,
+  StyledLoader,
+} from 'components/common'
+import Input from 'components/FormComponents/Input'
 import Heading from 'components/Heading'
 import Sidebar from 'components/Sidebar'
 import SidebarCard from 'components/SidebarCard'
 import SVGIcon from 'components/SVGIcon'
 import { TripContext } from 'contexts/TripContext'
-import { motion } from 'framer-motion'
 import moment from 'moment'
 import { GetServerSideProps, NextPage } from 'next'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
-import Loader from 'react-loader-spinner'
 import Modal from 'react-modal'
 import { api } from 'services/httpService'
-import styled from 'styled-components'
-import { device } from 'utils/style/responsive'
+import { customStyles } from 'utils/style/customStyles'
 
 const EditTrip: NextPage<{ id: string }> = ({ id }) => {
   const [state, dispatch] = useContext(TripContext)
-  // const {
-  //   query: { id },
-  // } = useRouter()
 
   const xValues = [5000, -40, 0]
   const [modalIsOpen, setIsOpen] = useState(false)
@@ -52,24 +67,11 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
     }
   }
 
-  const customStyles = {
-    content: {
-      top: '45%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '500px',
-    },
-  }
-
   let startDate =
     state.form.start_date !== '' ? moment(state.form.start_date, 'YYYY-MM-DD').toDate() : ''
 
   return (
     <Container>
-      {/*  */}
       <Main>
         <Heading title='Edit trip' />
         <Modal isOpen={modalIsOpen} style={customStyles} onRequestClose={() => setIsOpen(false)}>
@@ -193,13 +195,12 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
 
               <FormGroup>
                 <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.3 }}>
-                  <Label htmlFor='company'>Company name</Label>
                   <Input
-                    required
-                    id='company'
                     name='company'
-                    placeholder={state.form.company_name || 'Type here ...'}
-                    onChange={(e) => {
+                    label='Company name'
+                    value={state.form.company_name}
+                    placeholder='Type here ...'
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       dispatch({
                         type: 'SET_CompanyName',
                         payload: {
@@ -211,13 +212,12 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
                 </FormInnerGroup>
 
                 <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.4 }}>
-                  <Label htmlFor='city'>City</Label>
                   <Input
-                    required
-                    id='city'
                     name='city'
-                    placeholder={state.form.address.city || 'Type here ...'}
-                    onChange={(e) => {
+                    label='City'
+                    value={state.form.address.city}
+                    placeholder='Type here ...'
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       dispatch({
                         type: 'SET_CITY',
                         payload: {
@@ -231,13 +231,12 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
                 </FormInnerGroup>
 
                 <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.5 }}>
-                  <Label htmlFor='street'>Street</Label>
                   <Input
-                    required
-                    id='street'
                     name='street'
-                    placeholder={state.form.address.street || 'Type here ...'}
-                    onChange={(e) => {
+                    label='Street'
+                    value={state.form.address.street}
+                    placeholder='Type here ...'
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       dispatch({
                         type: 'SET_Street',
                         payload: {
@@ -251,13 +250,12 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
                 </FormInnerGroup>
 
                 <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.6 }}>
-                  <Label htmlFor='streetNumber'>Street Number</Label>
                   <Input
-                    required
-                    id='streetNumber'
                     name='streetNumber'
-                    placeholder={state.form.address.street_num || 'Type here ...'}
-                    onChange={(e) => {
+                    label='Street Number'
+                    placeholder='Type here ...'
+                    value={state.form.address.street_num}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       dispatch({
                         type: 'SET_StreetNumber',
                         payload: {
@@ -271,13 +269,12 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
                 </FormInnerGroup>
 
                 <FormInnerGroup animate={{ x: xValues }} transition={{ duration: 1, delay: 0.7 }}>
-                  <Label htmlFor='zipCode'>Zip code</Label>
                   <Input
-                    required={true}
-                    id='zipCode'
                     name='zipCode'
-                    placeholder={state.form.address.zip || 'Type here ...'}
-                    onChange={(e) => {
+                    label='Zip code'
+                    value={state.form.address.zip}
+                    placeholder='Type here ...'
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       dispatch({
                         type: 'SET_ZIP',
                         payload: {
@@ -382,259 +379,3 @@ export const getServerSideProps: GetServerSideProps<any, any> = async ({ params:
     },
   }
 }
-
-const DPDown = styled(motion.div)``
-const FormButtonGroup = styled.div`
-  flex-direction: row;
-`
-
-const AcceptDeleteButton = styled(motion.div)`
-  background: red;
-  font-size: 1.6rem;
-  padding: 1.3rem 2rem;
-  margin: 1.2rem;
-  max-width: 200px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-align: left;
-  display: inline-block;
-  align-items: center;
-  cursor: pointer;
-  color: white;
-
-  > svg {
-    margin-left: auto;
-  }
-`
-
-const StyledLoader = styled(Loader)`
-  display: flex;
-  justify-content: center;
-  margin: 50px;
-`
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex: 1;
-  width: 100%;
-  height: 100vh;
-`
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-`
-
-const Form = styled(motion.form)`
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  width: 100%;
-  align-items: center;
-`
-
-const FormContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  width: 100%;
-  align-items: center;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: white;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #ccc;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-`
-
-const DatePickerWrap = styled.div`
-  position: relative;
-  flex: 1;
-  width: 100%;
-`
-
-const InnerForm = styled.div`
-  width: 100%;
-  flex: 1;
-  max-width: 500px;
-  padding: 5rem 0;
-
-  @media ${device.tablet} {
-    padding: 2rem;
-  }
-`
-
-const FormGroup = styled.div`
-  background-color: var(--grey);
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  border-radius: 5px;
-  margin-bottom: 1.5rem;
-
-  strong {
-    font-weight: bold;
-  }
-`
-
-const FormInnerGroup = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  background: #f9f9fa;
-  border-radius: 10px;
-
-  margin-top: 2rem;
-  width: 100%;
-
-  &:first-child {
-    margin-top: 0;
-  }
-`
-
-const Label = styled.label`
-  display: block;
-  font-size: 1.4rem;
-  margin-bottom: 2rem;
-  color: black;
-  display: block;
-  width: 100%;
-`
-
-const LabelQuestion = styled(motion.label)`
-  display: block;
-  font-size: 1.4rem;
-  color: black;
-  display: block;
-  width: 100%;
-
-  strong {
-    font-weight: 600;
-  }
-
-  @media ${device.tablet} {
-    font-size: 1.2rem;
-  }
-`
-
-const Input = styled.input`
-  padding: 1.3rem 1.6rem;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.6rem;
-  border: 1px solid #f1f1f2;
-  outline: 0;
-  display: block;
-  width: 100%;
-  font-size: 1.4rem;
-  line-height: 2rem;
-
-  &::placeholder {
-    color: var(--dark-grey);
-  }
-
-  &:focus {
-    border: 1px solid #ccc;
-  }
-
-  &.react-datepicker-ignore-onclickoutside {
-    border-radius: 10px 10px 0 0 !important;
-  }
-`
-
-const RadioButtonGroup = styled(motion.div)`
-  display: flex;
-  margin-top: 2rem;
-`
-
-const RadioButton = styled.label`
-  position: relative;
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  background: #f1f1f2;
-  color: #76787b;
-  font-weight: 600;
-  margin-right: 1rem;
-  padding-left: 3.5rem;
-  font-size: 1.6rem;
-  line-height: 2rem;
-
-  > input {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-  }
-
-  > div {
-    content: '';
-    display: block;
-    width: 16px;
-    height: 16px;
-    border-radius: 16px;
-    border: 1px solid #d6d6d3;
-    background: white;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    margin-top: -8px;
-  }
-
-  > div:before {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 10px;
-    background: black;
-    position: absolute;
-    left: 3px;
-    top: 3px;
-    transform: scale(0);
-    transition: transform 0.15s;
-  }
-
-  > input:checked ~ div:before {
-    transform: scale(1);
-  }
-`
-
-const FormFooter = styled.div`
-  width: 100%;
-  border-top: 1px solid #f1f1f2;
-  padding: 2rem 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const Button = styled.button`
-  background: var(--accent);
-  font-size: 1.6rem;
-  padding: 1.3rem 2rem;
-  flex: 1;
-  max-width: 200px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-align: left;
-  display: flex;
-  align-items: center;
-
-  > svg {
-    margin-left: auto;
-  }
-`

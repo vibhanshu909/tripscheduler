@@ -3,7 +3,7 @@ import { FC, useContext } from 'react'
 import styled from 'styled-components'
 import { device } from 'utils/style/responsive'
 
-interface IHeadingProps {
+export interface IHeadingProps {
   title: string
 }
 
