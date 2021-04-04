@@ -23,14 +23,14 @@ const customStyles = {
   },
 } as const
 
-interface ITripRow extends HTMLMotionProps<'div'> {
+export interface ITripRowProps extends HTMLMotionProps<'div'> {
   country: string
   company: string
   date: Date | string
   id: string
   address: string
 }
-const TripRow: FC<ITripRow> = ({ country, company, date, id, address }) => {
+const TripRow: FC<ITripRowProps> = ({ country, company, date, id, address }) => {
   const [modalIsOpen, setIsOpen] = useState(false)
   const dispatch = useContext(TripContext)[1]
   const animation = useAnimation()
