@@ -8,4 +8,4 @@ export const customStyles = {
     transform: 'translate(-50%, -50%)',
     width: '500px',
   },
-} as const
+} /* the `as const` tells the typescript compiler to treat this object as a readonly constant, thus preventing any code that tries to mutate this object anywhere is your source code. */ as const

@@ -1,6 +1,8 @@
 export const submitForm = () => {
-  //* The .as function creates an alias for the selected element
-  cy.get('main main form').as('form').should('exist')
+  cy.get('main main form')
+    //* The `.as` function creates an alias for the selected element
+    .as('form')
+    .should('exist')
 
   //* getting the element by alias
   cy.get('@form')
@@ -9,9 +11,9 @@ export const submitForm = () => {
     .as('inputs')
 
   cy.get('@inputs')
-    //* the .eq(0) function gets the 0th element from an array of elements
+    //* the `.eq(0)` function gets the 0th element from an array of elements
     .eq(0)
-    //* .within function scopes cypress within that element.
+    //* `.within` function scopes cypress within that element.
     .within(() => {
       cy.get('div.Dropdown-root')
         .click()
@@ -28,7 +30,12 @@ export const submitForm = () => {
     .eq(1)
     .within(() => {
       cy.get('div[class*="FormInnerGroup"]').as('dates')
-      cy.get('@dates').eq(0).click().type('{enter}')
+      cy.get('@dates')
+        .eq(0)
+        .click()
+        //* `type` function is used to send keystrokes to the element.
+        //* The non-printable buttons like `enter key, esc key etc` is sent in a special way using enclosing braces like `{enter}`
+        .type('{enter}')
       cy.get('@dates').eq(1).click().type('{enter}')
     })
 
