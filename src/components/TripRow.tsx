@@ -7,21 +7,10 @@ import Modal from 'react-modal'
 import { api } from 'services/httpService'
 import styled from 'styled-components'
 import { FlagMap } from 'utils/FlagMap'
+import { customStyles } from 'utils/style/customStyles'
 import { device } from 'utils/style/responsive'
 import Anchor from './Anchor'
 import SVGIcon from './SVGIcon'
-
-const customStyles = {
-  content: {
-    top: '45%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '500px',
-  },
-} as const
 
 export interface ITripRowProps extends HTMLMotionProps<'div'> {
   country: string

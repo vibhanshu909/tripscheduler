@@ -2,34 +2,9 @@ import Arrow from 'assets/Arrow.svg'
 import DatePickerLeft from 'assets/DatePickerLeft.svg'
 import DatePickerRight from 'assets/DatePickerRight.svg'
 import GlobeIcon from 'assets/DropdownGlobe.svg'
-import AustriaFlag from 'assets/flags/austria.svg'
-import ChinaFlag from 'assets/flags/china.svg'
-import FranceFlag from 'assets/flags/france.svg'
-import GreeceFlag from 'assets/flags/greece.svg'
-import ItalyFlag from 'assets/flags/italy.svg'
-import NetherlandsFlag from 'assets/flags/netherlands.svg'
-import PortgualFlag from 'assets/flags/portugal.svg'
-import SlovakiaFlag from 'assets/flags/slovakia.svg'
-import SpainFlag from 'assets/flags/spain.svg'
-import SweedenFlag from 'assets/flags/sweden.svg'
-import UnitedKingdomFlag from 'assets/flags/united-kingdom.svg'
 import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from 'styled-components'
+import { FlagMap } from 'utils/FlagMap'
 import { device } from './responsive'
-
-const flags = {
-  globe: GlobeIcon,
-  at: AustriaFlag,
-  cn: ChinaFlag,
-  fr: FranceFlag,
-  gr: GreeceFlag,
-  it: ItalyFlag,
-  aw: NetherlandsFlag,
-  pt: PortgualFlag,
-  sk: SlovakiaFlag,
-  es: SpainFlag,
-  se: SweedenFlag,
-  uk: UnitedKingdomFlag,
-} as const
 
 const GlobalStyle: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -341,7 +316,7 @@ const GlobalStyle: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
   }
 
   .Dropdown-root .Dropdown-control {
-    background: url(${flags.globe}) no-repeat;
+    background: url(${GlobeIcon}) no-repeat;
     background-color: white !important;
 
     &:hover {
@@ -360,37 +335,37 @@ const GlobalStyle: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
   }
 
   .Dropdown-root.flag-at .Dropdown-control, .Dropdown-option.flag-at {
-    background: url(${flags.at}) no-repeat;
+    background: url(${FlagMap.at.icon}) no-repeat;
   }
   .Dropdown-root.flag-cn .Dropdown-control, .Dropdown-option.flag-cn {
-    background: url(${flags.cn}) no-repeat;
+    background: url(${FlagMap.cn.icon}) no-repeat;
   }
   .Dropdown-root.flag-fr .Dropdown-control, .Dropdown-option.flag-fr {
-    background: url(${flags.fr}) no-repeat;
+    background: url(${FlagMap.fr.icon}) no-repeat;
   }
   .Dropdown-root.flag-gr .Dropdown-control, .Dropdown-option.flag-gr {
-    background: url(${flags.gr}) no-repeat;
+    background: url(${FlagMap.gr.icon}) no-repeat;
   }
   .Dropdown-root.flag-it .Dropdown-control, .Dropdown-option.flag-it {
-    background: url(${flags.it}) no-repeat;
+    background: url(${FlagMap.it.icon}) no-repeat;
   }
   .Dropdown-root.flag-aw .Dropdown-control, .Dropdown-option.flag-aw {
-    background: url(${flags.aw}) no-repeat;
+    background: url(${FlagMap.aw.icon}) no-repeat;
   }
   .Dropdown-root.flag-pt .Dropdown-control, .Dropdown-option.flag-pt {
-    background: url(${flags.pt}) no-repeat;
+    background: url(${FlagMap.pt.icon}) no-repeat;
   }
   .Dropdown-root.flag-sk .Dropdown-control, .Dropdown-option.flag-sk {
-    background: url(${flags.sk}) no-repeat;
+    background: url(${FlagMap.sk.icon}) no-repeat;
   }
   .Dropdown-root.flag-es .Dropdown-control, .Dropdown-option.flag-es {
-    background: url(${flags.es}) no-repeat;
+    background: url(${FlagMap.es.icon}) no-repeat;
   }
   .Dropdown-root.flag-se .Dropdown-control, .Dropdown-option.flag-se {
-    background: url(${flags.se}) no-repeat;
+    background: url(${FlagMap.se.icon}) no-repeat;
   }
   .Dropdown-root.flag-uk .Dropdown-control, .Dropdown-option.flag-uk {
-    background: url(${flags.uk}) no-repeat;
+    background: url(${FlagMap.uk.icon}) no-repeat;
   }
 
   .Dropdown-root .Dropdown-control {

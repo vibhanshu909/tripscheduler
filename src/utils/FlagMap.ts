@@ -11,19 +11,59 @@ import SwedenFlag from 'assets/flags/sweden.svg'
 import UnitedKingdomFlag from 'assets/flags/united-kingdom.svg'
 
 export const FlagMap = {
-  at: { icon: AustriaFlag, name: 'Austria', country: 'austria' },
-  cn: { icon: ChinaFlag, name: 'China', country: 'china' },
-  fr: { icon: FranceFlag, name: 'France', country: 'france' },
-  gr: { icon: GreeceFlag, name: 'Greece', country: 'greece' },
-  it: { icon: ItalyFlag, name: 'Italy', country: 'italy' },
-  aw: { icon: NetherlandsFlag, name: 'Netherlands', country: 'netherlands' },
-  pt: { icon: PortugalFlag, name: 'Portugal', country: 'portugal' },
-  sk: { icon: SlovakiaFlag, name: 'Slovakia', country: 'slovakia' },
-  es: { icon: SpainFlag, name: 'Spain', country: 'spain' },
-  se: { icon: SwedenFlag, name: 'Sweden', country: 'sweden' },
+  at: {
+    icon: AustriaFlag,
+    name: 'Austria',
+    country: 'austria',
+  },
+  cn: {
+    icon: ChinaFlag,
+    name: 'China',
+    country: 'china',
+  },
+  fr: {
+    icon: FranceFlag,
+    name: 'France',
+    country: 'france',
+  },
+  gr: {
+    icon: GreeceFlag,
+    name: 'Greece',
+    country: 'greece',
+  },
+  it: {
+    icon: ItalyFlag,
+    name: 'Italy',
+    country: 'italy',
+  },
+  aw: {
+    icon: NetherlandsFlag,
+    name: 'Netherlands',
+    country: 'netherlands',
+  },
+  pt: {
+    icon: PortugalFlag,
+    name: 'Portugal',
+    country: 'portugal',
+  },
+  sk: {
+    icon: SlovakiaFlag,
+    name: 'Slovakia',
+    country: 'slovakia',
+  },
+  es: {
+    icon: SpainFlag,
+    name: 'Spain',
+    country: 'spain',
+  },
+  se: {
+    icon: SwedenFlag,
+    name: 'Sweden',
+    country: 'sweden',
+  },
   uk: {
     icon: UnitedKingdomFlag,
     name: 'United Kingdom',
     country: 'united-kingdom',
   },
-} as const
+} /* the `as const` tells the typescript compiler to treat this object as a readonly constant, thus preventing any code that tries to mutate this object anywhere is your source code. */ as const
