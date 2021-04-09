@@ -26,10 +26,13 @@ type TripPayloadDispatchAction = {
   payload?: any
 }
 
+// what does the line below do?
 type TripPayload = [typeof initialState, Dispatch<TripPayloadDispatchAction>]
 
+// what does the undefined as any do?
 export const TripContext = createContext<TripPayload>(undefined as any)
 
+// where do you get these types like TripPayloadDispatchAction from?
 const reducer = (state: typeof initialState, action: TripPayloadDispatchAction) => {
   switch (action.type) {
     case 'SET_INITIAL':
@@ -181,6 +184,7 @@ const TripProvider: FC = ({ children }) => {
     fetchCountries()
   }, [])
 
+  // didnt understand anything of the syntax of this fetchCountries!!
   const fetchCountries = async () => {
     const { data } = (await api.get('/country')) as {
       data: { label: string }[]

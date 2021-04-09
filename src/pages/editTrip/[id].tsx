@@ -37,6 +37,7 @@ import Modal from 'react-modal'
 import { api } from 'services/httpService'
 import { customStyles } from 'utils/style/customStyles'
 
+// what is the NextPage?
 const EditTrip: NextPage<{ id: string }> = ({ id }) => {
   const [state, dispatch] = useContext(TripContext)
 
@@ -80,6 +81,7 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
           >
+            {/* q?? */}
             <Label htmlFor='q' style={{ textAlign: 'center' }}>
               Trip modified Successfully
             </Label>
@@ -102,6 +104,7 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
           <FormContent>
             <InnerForm>
               <FormGroup>
+                {/* what are those xValues?? */}
                 <DPDown animate={{ x: xValues }} transition={{ duration: 1 }}>
                   <Label htmlFor='countries'>Where do you want to go</Label>
                   <Dropdown
@@ -131,8 +134,10 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
                   <DatePickerWrap>
                     <DatePicker
                       required
+                      // what does the line below do?
                       selected={typeof startDate === 'string' ? undefined : startDate}
                       onChange={(date) => {
+                        // why date as any?
                         let nextDay = moment(date as any)
                           .add(1, 'day')
                           .toDate()
@@ -371,7 +376,7 @@ const EditTrip: NextPage<{ id: string }> = ({ id }) => {
 }
 
 export default EditTrip
-
+// what is the function below doing?
 export const getServerSideProps: GetServerSideProps<any, any> = async ({ params: { id } }) => {
   return {
     props: {

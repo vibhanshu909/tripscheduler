@@ -12,6 +12,7 @@ import { device } from 'utils/style/responsive'
 import Anchor from './Anchor'
 import SVGIcon from './SVGIcon'
 
+// what is this HTMLMotionProps being extended?
 export interface ITripRowProps extends HTMLMotionProps<'div'> {
   country: string
   company: string
@@ -21,9 +22,11 @@ export interface ITripRowProps extends HTMLMotionProps<'div'> {
 }
 const TripRow: FC<ITripRowProps> = ({ country, company, date, id, address }) => {
   const [modalIsOpen, setIsOpen] = useState(false)
+    // whats this [1] in the useContext?
   const dispatch = useContext(TripContext)[1]
   const animation = useAnimation()
 
+  // what is this as keyof typeof FlagMap?
   const flag = country.toLowerCase().split(' ').join('-') as keyof typeof FlagMap
   const image = FlagMap[flag].icon
 
@@ -38,6 +41,7 @@ const TripRow: FC<ITripRowProps> = ({ country, company, date, id, address }) => 
     }
   }
 
+  // why awai the animation then below call it again without awaiting?
   async function sequence() {
     await animation.start({ y: 70, transition: { duration: 0.2 } })
     animation.start({ y: 0, transition: { duration: 0.2 } })
@@ -49,7 +53,9 @@ const TripRow: FC<ITripRowProps> = ({ country, company, date, id, address }) => 
     <div>
       <Modal
         isOpen={modalIsOpen}
+        // why these customStyles exported an all the others in the same module as styled-components, what does it do?
         style={customStyles}
+        // whats this?
         ariaHideApp={false}
         onRequestClose={() => setIsOpen(false)}
       >
@@ -58,6 +64,7 @@ const TripRow: FC<ITripRowProps> = ({ country, company, date, id, address }) => 
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
         >
+          {/* q?? */}
           <Label htmlFor='q'>Are you sure you want to delete this trip?</Label>
           <FormButtonGroup>
             <AcceptDeleteButton

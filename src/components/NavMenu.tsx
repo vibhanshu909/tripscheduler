@@ -32,6 +32,7 @@ const NavMenu = () => {
         </Logo>
 
         <MenuItems>
+        {/* why do you use that skipATag? */}
           <Anchor href='/newTrip' skipATag>
             <StyledNavLink onClick={menuCtx.toggleMenu}>
               <NewTrip

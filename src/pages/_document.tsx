@@ -1,6 +1,7 @@
 import Document from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
+// i dindt understand pretty much anything that this module does
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
     const sheet = new ServerStyleSheet()

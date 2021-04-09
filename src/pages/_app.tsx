@@ -10,7 +10,7 @@ import { device } from 'utils/style/responsive'
 import { init } from '../utils/sentry'
 
 init()
-
+// why the Head here? I though it should be in _document
 const App: NextPage<any, any> = ({ Component, pageProps }) => {
   return (
     <>

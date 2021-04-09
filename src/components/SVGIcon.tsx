@@ -10,8 +10,11 @@ interface ISVGIconProps {
 }
 
 //* The `forwardRef` function forwards the ref passed by the parent component to this component.
+
+// why 2 types passed as generics below?
 const SVGIcon = React.forwardRef<HTMLImageElement, ISVGIconProps>(
   ({ icon, width = 40, height = 40, style = {} }, ref) => {
+    // what does the line below do?
     const Component = icon
     return (
       <img

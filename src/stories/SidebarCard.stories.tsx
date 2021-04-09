@@ -14,7 +14,7 @@ const Template: Story<ISidebarCardProps> = (args) => (
     <SidebarCard {...args} />
   </>
 )
-
+// what are those primary.args?
 export const Primary = Template.bind({})
 Primary.args = {
   address: 'address',

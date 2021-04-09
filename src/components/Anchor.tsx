@@ -1,6 +1,7 @@
 import Link, { LinkProps } from 'next/link'
 import React from 'react'
 
+// what is this Omit being extended?
 interface IAnchorProps
   extends Omit<
     React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,

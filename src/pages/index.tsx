@@ -1,10 +1,10 @@
+import { useContext, useState } from 'react'
+import moment from 'moment'
+import styled from 'styled-components'
 import Heading from 'components/Heading'
 import Sidebar from 'components/Sidebar'
 import TripRow from 'components/TripRow'
 import { TripContext } from 'contexts/TripContext'
-import moment from 'moment'
-import { useContext, useState } from 'react'
-import styled from 'styled-components'
 
 const Trips = () => {
   const [state] = useContext(TripContext)

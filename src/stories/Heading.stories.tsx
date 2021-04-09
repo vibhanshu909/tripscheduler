@@ -4,6 +4,7 @@ import MenuProvider from 'contexts/MenuContext'
 import React from 'react'
 import GlobalStyle from 'utils/style/global'
 
+// as Meta?
 export default {
   title: 'Components/Heading',
   component: Heading,
@@ -18,6 +19,7 @@ const Template: Story<IHeadingProps> = (args) => (
   </>
 )
 
+// why the bind below?
 export const Primary = Template.bind({})
 Primary.args = {
   title: 'Title',
